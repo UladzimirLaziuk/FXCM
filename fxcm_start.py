@@ -11,6 +11,8 @@ import fxcmpy
 
 from dotenv import load_dotenv
 
+from utils.utils_func import wrapped_partial
+
 load_dotenv(dotenv_path='.env')
 
 
@@ -32,7 +34,7 @@ def determine_the_signal(symbol: str, value: Union[str, int], dict_symbol_matchi
     return False, symbol, value, ''
 
 
-def normalize_data(float_digits: float, round_int:int) -> int:
+def normalize_data(float_digits: float, round_int: int) -> int:
     """Custom normalize)))"""
     return int(str(round(float_digits, round_int)).split('.')[1][-3::])
 
@@ -47,12 +49,6 @@ def func_create_dict_digits_for_symbol(dict_symbol: Dict, constant_list: List) -
     for symbol, value in dict_symbol.items():
         result_dict[symbol] = list(map(lambda x: x + int(value), constant_list))
     return result_dict
-
-
-def wrapped_partial(func, *args, **kwargs):
-    partial_func = partial(func, *args, **kwargs)
-    update_wrapper(partial_func, func)
-    return partial_func
 
 
 def create_subscribe(dict_symbol: Dict, connection, func_callback=data_processing) -> None:
